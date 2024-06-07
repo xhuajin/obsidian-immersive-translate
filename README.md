@@ -1,96 +1,73 @@
-# Obsidian Sample Plugin
+# Overview
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+Obsidian 版沉浸式翻译，在文本下方添加翻译内容的思路取自沉浸式翻译 (https://immersivetranslate.com/)
 
-This project uses Typescript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in Typescript Definition format, which contains TSDoc comments describing what it does.
+![](./images/show1.gif)
 
-**Note:** The Obsidian API is still in early alpha and is subject to change at any time!
+![](./images/show2.gif)
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+目前只支持使用百度翻译和腾讯翻译 (https://cloud.tencent.com/document/product/551/35017)
 
-## First time developing plugins?
+可以注册获得两个翻译服务的 api 后同时使用，一个用完了换另一个，主打的就是免费量大管饱。为什么我选择写了这两个翻译服务呢，主要是因为它们免费且国内可用。
 
-Quick starting guide for new plugin devs:
+## 一、API 获取
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+### 百度翻译
 
-## Releasing new releases
+先说结论：免费，100万免费字符/月够用，注册简单，速度没问题（10次请求/秒）。
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+百度翻译有三种类型的账号：
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+- 标准版：5万免费字符/月，每秒允许 1 次翻译请求，量少且非常慢，建议认证高级版；
+- 高级版：标准版认证一下就可以升级为高级版，认证需要需填写真实姓名及身份证号。100万免费字符/月，每秒允许 10 次翻译请求；
+- 尊享版：200万免费字符/月，需要企业认证才能获得；
 
-## Adding your plugin to the community plugin list
+详细信息见 https://fanyiapp.cdn.bcebos.com/api/doc/%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E7%BF%BB%E8%AF%91API%E6%9C%8D%E5%8A%A1%E5%8D%87%E7%BA%A7%E8%AF%B4%E6%98%8E.docx
 
-- Check https://github.com/obsidianmd/obsidian-releases/blob/master/plugin-review.md
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+三种账号超额均按49元/百万字符收费。
 
-## How to use
+如何获取百度翻译 api：打开 https://api.fanyi.baidu.com/api/trans/product/index，选择「通用翻译 API」，点击立即使用（需要登陆），之后按照里面的提示一步步走就行（其实是我注册过了不记得后面的流程了）
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+### 腾讯翻译
 
-## Manually installing the plugin
+先说结论：免费，500万免费字符/月，注册稍微复杂些，限速比百度翻译高级版限的多一倍（5次请求/秒），可以用作后备能源。
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+腾讯翻译api获取比较麻烦，但是量大管饱：
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
+1. 打开 https://cloud.tencent.com/，注册一个腾讯云账号（有账号的直接登录就行）
+2. 点击右上角头像进入「账号中心」，点击「访问管理」
+3. 在「用户 => 用户列表」中创建一个子账号，同时点击授权，使得子账号具有使用机器翻译的权限
 
-## Funding URL
+![](./images/image1.png)
 
-You can include funding URLs where people who use your plugin can financially support it.
+4. 点击新创建的子用户，右侧有个快捷登录，复制该链接，然后退出主账户后再打开刚刚复制的链接，否则会提示已登录
 
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
+![](./images/image2.png)
 
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
-```
+5. 登录上子账户后，点击右上角头像进入「账号中心」，点击「访问管理 => 访问密钥 => API密钥管理」新建一个密钥即可获得我们需要的 SecretID 和 SecretKey 了，注意需要自行保管，忘了就要重新生成一次。
 
-If you have multiple URLs, you can also do:
+![](./images/image3.png)
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
-```
 
-## API Documentation
+## 二、使用
 
-See https://github.com/obsidianmd/obsidian-api
+下载好插件后，打开设置面板，填入前面申请的 id 和 key 即可使用
+
+![](./images/image4.png)
+
+你可以在下方的翻译框中测试是否成功
+
+![](./images/image5.png)
+
+需要注意的是，两个翻译服务都需要填写一个翻译延迟，否则就会因为翻译请求发送的太快，服务器拒绝请求。百度翻译如果认证了高级版，可以延迟可以填写到 100ms 左右，略高点也为题不大，体验没啥区别。腾讯翻译每秒只允许 5 次请求，延迟需要填高一点，实测可能填到两三百以上才能确保请求不会被拒绝。
+
+另外，百度翻译翻译文本发送采用 MD5 加密，加密速度快，但是不那么安全，用于翻译插件设置还是没什么问题的。腾讯翻译采用 SHA-256 加密，安全性能够得到保证。（ps.但是写腾讯翻译签名方法比百度翻译的折磨多了）
+
+## 三、翻译失败
+
+我增加了一个重新翻译的按钮，可以尝试下重新翻译。你也可以 ctrl shift i 打开控制台看看错误代码是多少，下面是两个翻译服务的部分错误代码对应翻译失败的原因：
+
+百度翻译：54003 代表请求过多，需要增大翻译延迟。52001 代表请求超时，可能是网络卡顿，也可能是文本过长。54001表示签名错误。58003被封了（同一 IP 当日使用多个 APPID 发送翻译请求，则该IP将被封禁当日请求权限，次日解封），详见 https://api.fanyi.baidu.com/product/113
+
+腾讯翻译：LimitExceeded.LimitedAccessFrequency 请求过快，增大翻译延迟。FailedOperation.LanguageRecognitionErr	暂时无法识别该语种，可能是因为有emoji。FailedOperation.NoFreeAmount	本月免费额度已用完。FailedOperation.ServiceIsolate	账号因为欠费停止服务，需要在腾讯云账户充值。更多请见：https://cloud.tencent.com/document/product/551/15619#6.-.E9.94.99.E8.AF.AF.E7.A0.81
+

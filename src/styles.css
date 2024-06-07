@@ -1,0 +1,115 @@
+.mod-settings .vertical-tab-content-container .imt-menu {
+  position: absolute;
+  display: flex;
+  right: 5px;
+  bottom: 5px;
+}
+
+.imt-menu .imt-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.imt-menu .imt-menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+.imt-translated.imt-result-hide .imt-result {
+  display: none;
+}
+
+.setting-item-name + .imt-result {
+  color: var(--text-normal);
+  font-size: var(--font-ui-medium);
+  line-height: var(--line-height-tight);
+}
+
+.setting-item-description + .imt-result {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  padding-top: var(--size-4-1);
+  line-height: var(--line-height-tight);
+}
+
+.imt-settings-tab-header {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.imt-settings-tab-header .imt-settings-tab-header-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.imt-settings-tab-header .imt-settings-tab-header-item.is-active {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.setting-item-info :is(.setting-item-name, .setting-item-description):has(.imt-retranslate) {
+  display: flex;
+}
+
+.imt-retranslate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.setting-item-name .imt-retranslate {
+  color: var(--text-normal);
+}
+
+.setting-item-description .imt-retranslate {
+  color: var(--text-muted);
+}
+
+.imt-retranslate.imt-retranslate-clicked {
+  animation: retranslate 1s linear infinite;
+}
+
+@keyframes retranslate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.translate-panel {
+  width: 100%;
+}
+
+td.from-language,
+td.to-language {
+  width: 50%;
+}
+
+select.from-language-dropdown,
+select.to-language-dropdown {
+  margin-bottom: 10px;
+  width: 50%;
+}
+
+.translate-text-container,
+.result-text-container {
+  width: 100%;
+  min-height: 200px;
+  resize: none;
+}
